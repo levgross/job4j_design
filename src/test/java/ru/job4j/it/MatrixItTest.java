@@ -75,7 +75,7 @@ public class MatrixItTest {
     }
 
     @Test
-    public void whenMultiHashNext() {
+    public void whenMultiHasNext() {
         int[][] in = {
                 {}, {1}
         };
