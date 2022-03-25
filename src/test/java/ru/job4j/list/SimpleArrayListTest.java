@@ -108,6 +108,9 @@ public class SimpleArrayListTest {
 
     @Test
     public void whenNoPlaceThenMustIncreaseCapacity() {
+        Assert.assertEquals(3, list.size());
+        list.add(null);
+        Assert.assertEquals(4, list.size());
         IntStream.range(3, 10).forEach(v -> list.add(v));
     }
 
@@ -121,7 +124,7 @@ public class SimpleArrayListTest {
     @Test(expected = ConcurrentModificationException.class)
     public void whenRemoveAfterGetIteratorThenMustBeException() {
         Iterator<Integer> iterator = list.iterator();
-        list.add(0);
+        list.remove(0);
         iterator.next();
     }
 
