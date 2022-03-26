@@ -108,9 +108,6 @@ public class SimpleArrayListTest {
 
     @Test
     public void whenNoPlaceThenMustIncreaseCapacity() {
-        Assert.assertEquals(3, list.size());
-        list.add(null);
-        Assert.assertEquals(4, list.size());
         IntStream.range(3, 10).forEach(v -> list.add(v));
     }
 
