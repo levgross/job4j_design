@@ -43,12 +43,9 @@ public class SimpleLinkedList<E> implements List<E> {
         Node<E> current = first;
         E value = null;
         for (int i = 0; i <= index; i++) {
-            if (i == index) {
                 value = current.item;
-                break;
+                current = current.next;
             }
-            current = current.next;
-        }
         return value;
     }
 
