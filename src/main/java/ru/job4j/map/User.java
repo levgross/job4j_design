@@ -13,6 +13,11 @@ public class User {
         this.birthday = birthday;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, children, birthday);
+    }
+
     public static void main(String[] args) {
         User petrov = new User("Petrov", 2, new GregorianCalendar(2000, 2, 30));
         User petrova = new User("Petrov", 2, new GregorianCalendar(2000, 2, 30));
