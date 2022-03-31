@@ -34,7 +34,7 @@ public class User {
         User petrov = new User("Petrov", 2, new GregorianCalendar(2000, 2, 30));
         User petrova = new User("Petrov", 2, new GregorianCalendar(2000, 2, 30));
 
-        Map<User, Object> map = new HashMap<>();
+        HashMap<User, Object> map = new HashMap<>();
         map.put(petrov, new Object());
         map.put(petrova, new Object());
 
