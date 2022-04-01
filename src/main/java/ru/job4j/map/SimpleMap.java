@@ -46,7 +46,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
             MapEntry<K, V>[] oldTable = table;
             table = new MapEntry[capacity];
             for (MapEntry<K, V> i : oldTable) {
-                if (i.key != null) {
+                if (i != null) {
                     put(i.key, i.value);
                 }
             }
