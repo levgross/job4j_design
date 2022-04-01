@@ -42,6 +42,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private void expand() {
             capacity *= 2;
+            count = 0;
             MapEntry<K, V>[] oldTable = table;
             table = new MapEntry[capacity];
             for (MapEntry<K, V> i : oldTable) {
@@ -86,10 +87,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                while (table[point] == null && point < capacity - 1) {
+                while (point < capacity && table[point]  == null) {
                     point++;
                 }
-                return point < capacity - 1;
+                return point < capacity;
             }
 
             @Override
