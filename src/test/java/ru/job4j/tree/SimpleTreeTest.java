@@ -42,6 +42,15 @@ public class SimpleTreeTest {
     }
 
     @Test
+    public void whenAddThenTrueOrFalse() {
+        Tree<Integer> tree = new SimpleTree<>(1);
+        assertTrue(tree.add(1, 2));
+        assertFalse(tree.add(1, 2));
+        assertTrue(tree.add(2, 3));
+        assertFalse(tree.add(4, 5));
+    }
+
+    @Test
     public void when2ElThenBinary() {
         Tree<Integer> tree = new SimpleTree<>(1);
         tree.add(1, 2);
