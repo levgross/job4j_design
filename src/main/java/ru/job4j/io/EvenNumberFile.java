@@ -1,9 +1,10 @@
 package ru.job4j.io;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 
 public class EvenNumberFile {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         try (FileInputStream in = new FileInputStream("even.txt")) {
             StringBuilder text = new StringBuilder();
             int read;
@@ -20,7 +21,7 @@ public class EvenNumberFile {
                     System.out.println(num + " - is odd");
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
