@@ -21,7 +21,7 @@ public class Config {
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             for (String line = read.readLine(); line != null; line = read.readLine()) {
-                if (!line.equals("") && !line.startsWith("#")) {
+                if (!"".equals(line) && !line.startsWith("#")) {
                     if (!line.contains("=") || line.contains(" =") || line.contains("= ")) {
                         throw new IllegalArgumentException();
                     }
