@@ -1,10 +1,7 @@
 package ru.job4j.io;
 
-import org.w3c.dom.Node;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Analysis {
