@@ -9,8 +9,8 @@ import java.util.function.Predicate;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get(".");
-        List<Path> list = search(start, p -> p.toFile().getName().endsWith(".txt"));
+        Path start = Paths.get(args[0]);
+        List<Path> list = search(start, p -> p.toFile().getName().endsWith(args[1]));
         System.out.println(list.size());
     }
 
