@@ -15,7 +15,7 @@ public class DuplicatesVisitor  extends SimpleFileVisitor<Path> {
     public Set<String> duplicates = new HashSet<>();
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        FileProperty fp = new FileProperty(file.toFile().getTotalSpace(), file.toFile().getName());
+        FileProperty fp = new FileProperty(file.toFile().length(), file.toFile().getName());
         if (paths.containsKey(fp)) {
             duplicates.add(paths.get(fp));
             duplicates.add(file.toFile().getAbsolutePath());
