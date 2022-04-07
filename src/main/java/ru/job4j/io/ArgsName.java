@@ -1,6 +1,5 @@
 package ru.job4j.io;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,19 +18,24 @@ public class ArgsName {
             throw new IllegalArgumentException("The argument is null. Usage java -jar argsName.jar -KEY=VALUE.");
         }
         for (String arg : args) {
-            if (!arg.startsWith("-")) {
-                throw new IllegalArgumentException("One of the arguments` names does not start with -."
-                        + " Usage java -jar argsName.jar -KEY=VALUE.");
-            }
-            String[] argValues = arg.split("=", 2);
-            if (argValues.length != 2 || "".equals(argValues[1])) {
-                throw new IllegalArgumentException("One of the arguments is not legal."
-                        + " Usage java -jar argsName.jar -KEY=VALUE.");
-            }
-            StringBuilder sb = new StringBuilder(argValues[0]);
+            StringBuilder sb = new StringBuilder(correctArgs(arg)[0]);
             String name = sb.deleteCharAt(0).toString();
-            values.put(name, argValues[1]);
+            values.put(name, correctArgs(arg)[1]);
         }
+    }
+
+    private String[] correctArgs(String arg) {
+        if (!arg.startsWith("-")) {
+            throw new IllegalArgumentException("One of the arguments` names does not start with -."
+                    + " Usage java -jar argsName.jar -KEY=VALUE.");
+        }
+        String[] argValues = arg.split("=", 2);
+        if (argValues.length != 2 || "".equals(argValues[1])
+                                    || argValues[1].startsWith(" ") || argValues[0].endsWith(" ")) {
+            throw new IllegalArgumentException("One of the arguments is not legal."
+                    + " Usage java -jar argsName.jar -KEY=VALUE.");
+        }
+        return argValues;
     }
 
     public static ArgsName of(String[] args) {
