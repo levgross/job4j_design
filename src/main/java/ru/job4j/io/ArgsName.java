@@ -18,9 +18,10 @@ public class ArgsName {
             throw new IllegalArgumentException("The argument is null. Usage java -jar argsName.jar -KEY=VALUE.");
         }
         for (String arg : args) {
-            StringBuilder sb = new StringBuilder(correctArgs(arg)[0]);
+            String[] checkedArgs = correctArgs(arg);
+            StringBuilder sb = new StringBuilder(checkedArgs[0]);
             String name = sb.deleteCharAt(0).toString();
-            values.put(name, correctArgs(arg)[1]);
+            values.put(name, checkedArgs[1]);
         }
     }
 
