@@ -8,14 +8,16 @@ public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
 
     public String get(String key) {
-        String rsl = values.get(key);
-        if (rsl == null) {
+        if (!values.containsKey(key)) {
             throw new IllegalArgumentException("The argument is null. Usage java -jar argsName.jar -KEY=VALUE.");
         }
-        return rsl;
+        return values.get(key);
     }
 
     private void parse(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("The argument is null. Usage java -jar argsName.jar -KEY=VALUE.");
+        }
         for (String arg : args) {
             if (!arg.startsWith("-")) {
                 throw new IllegalArgumentException("One of the arguments` names does not start with -."
