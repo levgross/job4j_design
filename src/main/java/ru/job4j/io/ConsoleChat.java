@@ -23,11 +23,12 @@ public class ConsoleChat {
     public void run() {
         Scanner input = new Scanner(System.in);
         List<String> log = new ArrayList<>();
+        List<String> botPhrases = readPhrases();
         String userPhrase;
         String botAnswer;
         boolean chat = true;
         boolean isStopped = false;
-        int size = readPhrases().size();
+        int size = botPhrases.size();
         System.out.println("Начните общение.");
         while (chat) {
             System.out.print("Пользователь: ");
@@ -40,9 +41,12 @@ public class ConsoleChat {
             } else if (STOP.equalsIgnoreCase(userPhrase)) {
                 isStopped = true;
             } else if (CONTINUE.equalsIgnoreCase(userPhrase)) {
+                botAnswer = "Бот: " + botPhrases.get(new Random().nextInt(size));
+                System.out.println(botAnswer);
+                log.add(botAnswer);
                 isStopped = false;
             } else if (!isStopped) {
-                botAnswer = "Бот: " + readPhrases().get(new Random().nextInt(size));
+                botAnswer = "Бот: " + botPhrases.get(new Random().nextInt(size));
                 System.out.println(botAnswer);
                 log.add(botAnswer);
             }
