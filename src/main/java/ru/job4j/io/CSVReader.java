@@ -16,6 +16,7 @@ public class CSVReader {
         String output = argsName.get("out");
         File target = new File(output);
         boolean printToFile = !"stdout".equals(output);
+        String ln = System.lineSeparator();
         try (Scanner scanner = new Scanner(new BufferedReader(
                 new FileReader(path, StandardCharsets.UTF_8))).useDelimiter(dl)) {
             String[] firstLine = scanner.nextLine().split(dl);
@@ -41,7 +42,7 @@ public class CSVReader {
                             printOutput(printToFile, out, array[fieldIndex[i]] + dl);
                         }
                     }
-                    printOutput(printToFile, out, "\r\n");
+                    printOutput(printToFile, out, ln);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
