@@ -11,13 +11,11 @@ public class CSVReader {
     public static void handle(ArgsName argsName) throws Exception {
         String path = argsName.get("path");
         String dl = argsName.get("delimiter");
-
         String[] fields = argsName.get("filter").split(",");
         int[] fieldIndex = new int[fields.length];
-
         String output = argsName.get("out");
         File target = new File(output);
-        int count = 1;
+        boolean printToFile = !"stdout".equals(output);
         try (Scanner scanner = new Scanner(new BufferedReader(
                 new FileReader(path, StandardCharsets.UTF_8))).useDelimiter(dl)) {
             String[] firstLine = scanner.nextLine().split(dl);
@@ -28,41 +26,36 @@ public class CSVReader {
                     }
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        if ("stdout".equals(output)) {
-            try (Scanner scanner = new Scanner(new BufferedReader(
-                    new FileReader(path, StandardCharsets.UTF_8))).useDelimiter(dl)) {
-                    while (scanner.hasNextLine()) {
-                        String[] array = scanner.nextLine().split(dl);
-                        for (int i = 0; i < fieldIndex.length; i++) {
-                            if (i == fieldIndex.length - 1) {
-                                System.out.print(array[fieldIndex[i]]);
-                            } else {
-                                System.out.print(array[fieldIndex[i]] + dl);
-                            }
+        try (Scanner scanner = new Scanner(new BufferedReader(
+                new FileReader(path, StandardCharsets.UTF_8))).useDelimiter(dl)) {
+            try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(target)))) {
+                while (scanner.hasNextLine()) {
+                    String[] array = scanner.nextLine().split(dl);
+                    for (int i = 0; i < fieldIndex.length; i++) {
+                        if (i == fieldIndex.length - 1) {
+                            printOutput(printToFile, out, array[fieldIndex[i]]);
+                        } else {
+                            printOutput(printToFile, out, array[fieldIndex[i]] + dl);
                         }
-                        System.out.println();
                     }
-            }
-        } else {
-            try (Scanner scanner = new Scanner(new BufferedReader(
-                    new FileReader(path, StandardCharsets.UTF_8))).useDelimiter(dl)) {
-                try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(target)))) {
-                    while (scanner.hasNextLine()) {
-                        String[] array = scanner.nextLine().split(dl);
-                        for (int i = 0; i < fieldIndex.length; i++) {
-                            if (i == fieldIndex.length - 1) {
-                                out.print(array[fieldIndex[i]]);
-                            } else {
-                                out.print(array[fieldIndex[i]] + dl);
-                            }
-                        }
-                        out.println();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    printOutput(printToFile, out, "\r\n");
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void printOutput(boolean printToFile, PrintWriter out, String el) {
+        if (printToFile) {
+            out.print(el);
+        } else {
+            System.out.print(el);
         }
     }
 
@@ -71,18 +64,25 @@ public class CSVReader {
         Path in = Paths.get(path);
         String output = an.get("out");
         if (!in.toFile().isFile() || !path.endsWith(".csv")) {
-            throw new IllegalArgumentException("Wrong input folder. "
-                    + "Usage java -jar csvReader.jar -path=file.csv");
+            throw new IllegalArgumentException("Wrong input folder. Example: filename.csv "
+                    + "Usage java -jar csvReader.jar -path=FILE_FOR_INPUT -out=FILE_FOR_OUTPUT (or -out=stdout) "
+                    + "-delimiter=\"SYMBOL\" -filter=COLUMN_NAME_1,COLUMN_NAME_2");
         }
         if (!"stdout".equals(output) && !output.endsWith(".csv")) {
             throw new IllegalArgumentException("Wrong output argument."
-                    + "Usage java -jar csvReader.jar -out=fileName.csv or -out=stdout");
+                    + "Usage java -jar csvReader.jar -path=FILE_FOR_INPUT -out=FILE_FOR_OUTPUT (or -out=stdout) "
+                    + "-delimiter=\"SYMBOL\" -filter=COLUMN_NAME_1,COLUMN_NAME_2");
         }
         an.get("delimiter");
         an.get("filter");
     }
 
     public static void main(String[] args) throws Exception {
+        if (args.length != 4) {
+            throw new IllegalArgumentException("Wrong quantity of arguments. "
+                    + "Usage java -jar csvReader.jar -path=FILE_FOR_INPUT -out=FILE_FOR_OUTPUT (or -out=stdout) "
+                    + "-delimiter=\"SYMBOL\" -filter=COLUMN_NAME_1,COLUMN_NAME_2");
+        }
         ArgsName argsName = ArgsName.of(args);
         CSVReader csvReader = new CSVReader();
         csvReader.validateArgs(argsName);
