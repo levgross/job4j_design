@@ -17,6 +17,26 @@ public class Dog {
         this.food = food;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public boolean isSex() {
+        return sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public Parents getParents() {
+        return parents;
+    }
+
+    public String[] getFood() {
+        return food;
+    }
+
     @Override
     public String toString() {
         return "Dog{"

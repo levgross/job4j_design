@@ -9,6 +9,14 @@ public class Parents {
         this.father = father;
     }
 
+    public String getMother() {
+        return mother;
+    }
+
+    public String getFather() {
+        return father;
+    }
+
     @Override
     public String toString() {
         return "Parents{"
