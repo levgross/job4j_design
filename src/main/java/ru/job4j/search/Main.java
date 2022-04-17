@@ -24,13 +24,16 @@ public class Main {
         List<Path> list = new ArrayList<>();
         if ("name".equals(typeSearch)) {
             list = search((root), p -> fileName.equals(p.toFile().getName()));
-        } else {
+        } else if ("mask".equals(typeSearch)) {
             PathMatcher pm = FileSystems.getDefault().getPathMatcher("glob:" + fileName);
-            list = search((root), pm::matches);
+            list = search((root), p -> (pm.matches(p.getFileName())));
+        } else if ("regex".equals(typeSearch)) {
+            PathMatcher pm = FileSystems.getDefault().getPathMatcher("regex:" + fileName);
+            list = search((root), p -> (pm.matches(p.getFileName())));
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(target.toString()))) {
             for (Path path : list) {
-                bw.write(path.toString());
+                bw.write(path.toString() + System.lineSeparator());
             }
         }
     }
@@ -43,24 +46,24 @@ public class Main {
             throw new IllegalArgumentException("Wrong file name. "
                     + "Usage java -jar fileSearch.jar"
                     + "-d=ROOT_FILE "
-                    + "-n=FILE_NAME_TO_SEARCH (it can be name or mask) "
-                    + "-t=TYPE_OF_SEARCH (name, mask) "
+                    + "-n=FILE_NAME_TO_SEARCH (it can be name, mask or regular expression) "
+                    + "-t=TYPE_OF_SEARCH (name, mask or regex) "
                     + "-o=FILE_NAME_FOR_RESULT");
         }
-        if (!"name".equals(typeSearch) && !"mask".equals(typeSearch)) {
+        if (!"name".equals(typeSearch) && !"mask".equals(typeSearch) && !"regex".equals(typeSearch)) {
             throw new IllegalArgumentException("Wrong type of search argument."
                     + "Usage java -jar fileSearch.jar"
                     + "-d=ROOT_FILE "
-                    + "-n=FILE_NAME_TO_SEARCH (it can be name or mask) "
-                    + "-t=TYPE_OF_SEARCH (name, mask) "
+                    + "-n=FILE_NAME_TO_SEARCH (it can be name, mask or regular expression) "
+                    + "-t=TYPE_OF_SEARCH (name, mask or regex) "
                     + "-o=FILE_NAME_FOR_RESULT");
         }
         if (!root.toFile().isDirectory()) {
             throw new IllegalArgumentException("Wrong root file name. "
                     + "Usage java -jar fileSearch.jar"
                     + "-d=ROOT_FILE "
-                    + "-n=FILE_NAME_TO_SEARCH (it can be name or mask) "
-                    + "-t=TYPE_OF_SEARCH (name, mask) "
+                    + "-n=FILE_NAME_TO_SEARCH (it can be name, mask or regular expression) "
+                    + "-t=TYPE_OF_SEARCH (name, mask or regex) "
                     + "-o=FILE_NAME_FOR_RESULT");
         }
         an.get("o");
