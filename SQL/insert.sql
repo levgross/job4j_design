@@ -1,0 +1,13 @@
+insert into rules (name) values ('can delete item');
+insert into rules (name) values ('can change item');
+insert into role (name) values ('customer');
+insert into role (name) values ('manager');
+insert into role_rules (role_id, rules_id) values (1, 2);
+insert into role_rules (role_id, rules_id) values (2, 1);
+insert into users (name, role_rules_id) values ('John', 1);
+insert into users (name, role_rules_id) values ('Bob', 2);
+insert into category (name) values ('important');
+insert into state (name) values ('in progress');
+insert into item (users_id, category_id, state_id) values (1, 1, 1);
+insert into comments (name, item_id) values ('not enough goods', 1);
+insert into attachs (url, item_id) values ('./goods/attachs/1/name.jpg', 1);
