@@ -22,10 +22,16 @@ insert into product(name, type_id, expired_date, price) values
 ('Сыр российский', 1, '01.01.2022', 350.4),
 ('Сыр Дорблю', 1, '25.09.2022', 1050);
 
-select * from product where type_id = 1;
+select * from product as p
+join type as t
+on p.type_id = t.id
+where t.name = 'СЫР';
+
 select * from product where name LIKE '%Мороженое%';
 select * from product where expired_date < current_date;
-select * from product order by price DESC limit(1);
+
+select * from product
+where price = (select max(price) from product);
 
 select t.name, count(p.name) 
 from type as t
