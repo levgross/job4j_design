@@ -1,8 +1,6 @@
 package ru.job4j.jdbc;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 import java.util.StringJoiner;
@@ -107,19 +105,21 @@ public class TableEditor implements AutoCloseable {
     }
 
     public static void main(String[] args) throws Exception {
-        Properties prop = new Properties();
-        FileInputStream in = new FileInputStream("my.properties");
-        prop.load(in);
-        TableEditor editor = new TableEditor(prop);
-        editor.createTable("people");
-        System.out.println(getTableScheme(editor.connection, "people"));
-        editor.dropTable("people");
-        editor.createTable("people");
-        editor.addColumn("people", "Age", "varchar(255)");
-        System.out.println(getTableScheme(editor.connection, "people"));
-        editor.dropColumn("people", "Age");
-        System.out.println(getTableScheme(editor.connection, "people"));
-        editor.renameColumn("people", "name", "names");
-        System.out.println(getTableScheme(editor.connection, "people"));
+        Properties config = new Properties();
+        try (InputStream in = TableEditor.class.getClassLoader().getResourceAsStream("app.properties")) {
+            config.load(in);
+        }
+        try (TableEditor editor = new TableEditor(config)) {
+            editor.createTable("people");
+            System.out.println(getTableScheme(editor.connection, "people"));
+            editor.dropTable("people");
+            editor.createTable("people");
+            editor.addColumn("people", "Age", "varchar(255)");
+            System.out.println(getTableScheme(editor.connection, "people"));
+            editor.dropColumn("people", "Age");
+            System.out.println(getTableScheme(editor.connection, "people"));
+            editor.renameColumn("people", "name", "names");
+            System.out.println(getTableScheme(editor.connection, "people"));
+        }
     }
 }
