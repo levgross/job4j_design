@@ -23,10 +23,11 @@ public class ImportDB {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             for (String line = rd.readLine(); line != null; line = rd.readLine()) {
-                if ("".equals(line.split(";")[0]) || line.split(";").length != 2) {
+                String[] lineParts = line.split(";");
+                if (lineParts.length != 2 || lineParts[0].isEmpty() || lineParts[1].isEmpty()) {
                     throw new IllegalArgumentException("Source contains not enough information. Usage: NAME;EMAIL;");
                 }
-                users.add(new User(line.split(";")[0], line.split(";")[1]));
+                users.add(new User(lineParts[0], lineParts[1]));
             }
         }
         return users;
