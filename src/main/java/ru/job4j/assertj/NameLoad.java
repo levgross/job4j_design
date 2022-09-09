@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class NameLoad {
+
     private final Map<String, String> values = new HashMap<>();
 
     public void parse(String... names) {
